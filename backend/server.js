@@ -1,7 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const dns = require('dns');
 require('dotenv').config();
+
+// Override default DNS servers to prevent querySrv ECONNREFUSED issues on local Windows configurations
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (err) {
+  console.warn('DNS server override failed:', err.message);
+}
 
 const authRoutes = require('./routes/auth');
 const stationRoutes = require('./routes/stations');
